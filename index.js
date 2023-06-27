@@ -197,23 +197,6 @@ app.whenReady().then(async function makeNewWindow() {
 
 		win.setTitle("Blockyfish Client");
 
-		if (store.get("shh") == true) {
-			win.webContents.executeJavaScript(`
-        game.socketManager.disconnect()
-        `);
-			app.e = "ban";
-			win.hide();
-			store.set("shh", true);
-			require("electron").dialog.showMessageBoxSync(win, {
-				type: "question",
-				buttons: ["Close"],
-				title: "Banned!",
-				message: "You are banned from Blockyfish Client\nGoodbye!",
-				icon: path.join(__dirname, "img/icon.png")
-			});
-			app.quit();
-		}
-
 		// set extension paths
 		if (!extensionsLoaded) {
 			const extensions = new ElectronChromeExtensions();
@@ -1321,28 +1304,6 @@ app.whenReady().then(async function makeNewWindow() {
                 aimBotRan = false
                 `);
 
-				//pink badge for me!!
-				function insertClientOwnerBadge() {
-					win.webContents.executeJavaScript(`
-                    if (document.querySelector('#app > div.vfm.vfm--inset.vfm--fixed.modal > div.vfm__container.vfm--absolute.vfm--inset.vfm--outline-none.modal-container > div > div > div > div.el-row.header > div.el-col.el-col-24.auto-col.fill > div > div:nth-child(2) > img') == null) {
-                        badgeParentDiv = document.querySelector('#app > div.vfm.vfm--inset.vfm--fixed.modal > div.vfm__container.vfm--absolute.vfm--inset.vfm--outline-none.modal-container > div > div > div > div.el-row.header > div.el-col.el-col-24.auto-col.fill > div')
-                        clientOwnerBadge = document.createElement('div')
-                        badgeParentDiv.insertBefore(clientOwnerBadge, badgeParentDiv.children[1])
-                        clientOwnerBadge.outerHTML = '<div class="el-image verified-icon el-tooltip__trigger el-tooltip__trigger" style="height: 1rem;margin-right: 0.25rem;width: 1rem;"><img src="/img/verified.png" class="el-image__inner" style="filter: hue-rotate(90deg);"></div>'
-                    }
-                    `);
-				}
-				function insertClientVerifiedBadge() {
-					win.webContents.executeJavaScript(`
-                    if (document.querySelector('#app > div.vfm.vfm--inset.vfm--fixed.modal > div.vfm__container.vfm--absolute.vfm--inset.vfm--outline-none.modal-container > div > div > div > div.el-row.header > div.el-col.el-col-24.auto-col.fill > div > div:nth-child(2) > img') == null) {
-                        badgeParentDiv = document.querySelector('#app > div.vfm.vfm--inset.vfm--fixed.modal > div.vfm__container.vfm--absolute.vfm--inset.vfm--outline-none.modal-container > div > div > div > div.el-row.header > div.el-col.el-col-24.auto-col.fill > div')
-                        clientOwnerBadge = document.createElement('div')
-                        badgeParentDiv.insertBefore(clientOwnerBadge, badgeParentDiv.children[1])
-                        clientOwnerBadge.outerHTML = '<div class="el-image verified-icon el-tooltip__trigger el-tooltip__trigger" style="height: 1rem;margin-right: 0.25rem;width: 1rem;"><img src="/img/verified.png" class="el-image__inner" style="filter: hue-rotate(165deg);"></div>'
-                    }
-                    `);
-				}
-
 				//make progress bar and track download progress to keep people sane
 				function setUpdateDownloadBar(percent) {
 					if (percent < 100) {
@@ -1396,30 +1357,6 @@ app.whenReady().then(async function makeNewWindow() {
 				//     `)
 				// });
 
-				request("https://blockyfish.netlify.app/data.json", { json: true }, (error, res, body) => {
-					if (error) {
-						return console.log(error);
-					}
-
-					if (!error && res.statusCode == 200) {
-						var e = body.ban;
-						var v = body.verified;
-						var t = body.verified2;
-						// console.log(e)
-						win.webContents.executeJavaScript(`
-                    setInterval(async function() {
-                        if (document.querySelector('div.el-row.is-align-start.user__data > div > div.mb-1.whitespace-nowrap.flex.items-center > h3') != null) {
-                            console.log('user: ' + document.querySelector('div.el-row.is-align-start.user__data > div > div.mb-1.whitespace-nowrap.flex.items-center > h3').innerText)
-                        }
-                    }, 3000)
-                    `);
-					}
-
-					// set funny variables for discord rpc
-					var old_mode = "FFA";
-					var old_menu = "0";
-					var old_url = "https://beta.deeeep.io";
-
 					// intercept every console log 😈🔥
 					if (!global.consoleLogScriptRunning) {
 						win.webContents.on("console-message", (ev, level, message, line, file) => {
@@ -1435,34 +1372,6 @@ app.whenReady().then(async function makeNewWindow() {
 								else if (msg == "res") win.unmaximize();
 								else if (msg == "min") win.minimize();
 								else if (msg == "cls") win.close();
-							}
-
-							if (matches(msg, "user: ")) {
-								msg = msg.replace("user: ", "");
-								request("https://apibeta.deeeep.io/users/u/" + msg, { json: true }, (error, res, body) => {
-									if (error) {
-										return console.log(error);
-									}
-
-									if (!error && res.statusCode == 200) {
-										if (e.includes(body.id)) {
-											win.webContents.executeJavaScript(`
-                                        game.socketManager.disconnect()
-                                        `);
-											app.e = "ban";
-											win.hide();
-											store.set("shh", true);
-											require("electron").dialog.showMessageBoxSync(win, {
-												type: "question",
-												buttons: ["Close"],
-												title: "Banned!",
-												message: "You are banned from Blockyfish Client\nGoodbye!",
-												icon: path.join(__dirname, "img/icon.png")
-											});
-											app.quit();
-										}
-									}
-								});
 							}
 
 							//find notification updates
@@ -2098,20 +2007,7 @@ app.whenReady().then(async function makeNewWindow() {
 						if (matches(currentUrl, "/u/")) {
 							var detailText = "Viewing " + currentUrl.replace("https://beta.deeeep.io/u/", "").replace(/\?host=....../i, "") + "'s profile";
 							var labelText = "";
-							request("https://apibeta.deeeep.io/users/u/" + currentUrl.replace("https://beta.deeeep.io/u/", "").replace(/\?host=....../i, ""), { json: true }, (error, res, body) => {
-								if (error) {
-									return console.log(error);
-								}
-								if (!error && res.statusCode == 200) {
-									if (v.includes(body.id)) {
-										insertClientOwnerBadge();
-									} else if (t.includes(body.id)) {
-										insertClientVerifiedBadge();
-									}
-								}
-							});
 						}
-
 						// these ones are self-explainatory
 						else if (matches(currentUrl, "/forum/")) {
 							var detailText = "Visiting the forums";
@@ -2155,7 +2051,6 @@ app.whenReady().then(async function makeNewWindow() {
 							Discord.clearActivity();
 						}
 					}
-				});
 			});
 			extensionsLoaded = true;
 		}
