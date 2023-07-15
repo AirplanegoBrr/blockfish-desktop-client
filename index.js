@@ -24,6 +24,12 @@ const request = require("request");
 const os = require("os");
 const fetch = require("node-fetch");
 
+const webAPI = "https://blockyfish.netlify.app"
+const deeepURL = "https://beta.deeeep.io"
+
+const discordURL = "https://discord.gg/W3TU4kqD5f"
+const githubURL = "https://github.com/blockyfish-client/"
+
 // debug mode
 const debug = false;
 
@@ -263,13 +269,13 @@ app.whenReady().then(async function makeNewWindow() {
 			});
 
 			// load the website
-			win.loadURL("https://beta.deeeep.io");
+			win.loadURL(`${deeepURL}`);
 			win.webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
 				if (errorDescription == "ERR_INTERNET_DISCONNECTED") {
 					win.loadFile("offline.html");
 					win.show();
 					setTimeout(() => {
-						win.loadURL("https://beta.deeeep.io");
+						win.loadURL(`${deeepURL}`);
 					}, 5000);
 				}
 			});
@@ -295,13 +301,13 @@ app.whenReady().then(async function makeNewWindow() {
 				win.webContents.executeJavaScript(`
             const brand_css = document.createElement('style')
             document.querySelector('head').appendChild(brand_css)
-            brand_css.outerHTML = '<link rel="stylesheet" href="https://blockyfish.netlify.app/themes/branding.css">'
+            brand_css.outerHTML = '<link rel="stylesheet" href="${webAPI}/themes/branding.css">'
             `);
 
 				win.webContents.executeJavaScript(`
             const titlebar_html = document.createElement('div')
             document.body.appendChild(titlebar_html)
-            titlebar_html.outerHTML = '<div id="window-controls"> <div class="button" id="min-button"> <img class="icon" srcset="https://blockyfish.netlify.app/assets/titlebar/min-w-10.png 1x, https://blockyfish.netlify.app/assets/titlebar/min-w-12.png 1.25x, https://blockyfish.netlify.app/assets/titlebar/min-w-15.png 1.5x, https://blockyfish.netlify.app/assets/titlebar/min-w-15.png 1.75x, https://blockyfish.netlify.app/assets/titlebar/min-w-20.png 2x, https://blockyfish.netlify.app/assets/titlebar/min-w-20.png 2.25x, https://blockyfish.netlify.app/assets/titlebar/min-w-24.png 2.5x, https://blockyfish.netlify.app/assets/titlebar/min-w-30.png 3x, https://blockyfish.netlify.app/assets/titlebar/min-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="max-button"> <img class="icon" srcset="https://blockyfish.netlify.app/assets/titlebar/max-w-10.png 1x, https://blockyfish.netlify.app/assets/titlebar/max-w-12.png 1.25x, https://blockyfish.netlify.app/assets/titlebar/max-w-15.png 1.5x, https://blockyfish.netlify.app/assets/titlebar/max-w-15.png 1.75x, https://blockyfish.netlify.app/assets/titlebar/max-w-20.png 2x, https://blockyfish.netlify.app/assets/titlebar/max-w-20.png 2.25x, https://blockyfish.netlify.app/assets/titlebar/max-w-24.png 2.5x, https://blockyfish.netlify.app/assets/titlebar/max-w-30.png 3x, https://blockyfish.netlify.app/assets/titlebar/max-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="restore-button" style="display: none;"> <img class="icon" srcset="https://blockyfish.netlify.app/assets/titlebar/restore-w-10.png 1x, https://blockyfish.netlify.app/assets/titlebar/restore-w-12.png 1.25x, https://blockyfish.netlify.app/assets/titlebar/restore-w-15.png 1.5x, https://blockyfish.netlify.app/assets/titlebar/restore-w-15.png 1.75x, https://blockyfish.netlify.app/assets/titlebar/restore-w-20.png 2x, https://blockyfish.netlify.app/assets/titlebar/restore-w-20.png 2.25x, https://blockyfish.netlify.app/assets/titlebar/restore-w-24.png 2.5x, https://blockyfish.netlify.app/assets/titlebar/restore-w-30.png 3x, https://blockyfish.netlify.app/assets/titlebar/restore-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="close-button"> <img class="icon" srcset="https://blockyfish.netlify.app/assets/titlebar/close-w-10.png 1x, https://blockyfish.netlify.app/assets/titlebar/close-w-12.png 1.25x, https://blockyfish.netlify.app/assets/titlebar/close-w-15.png 1.5x, https://blockyfish.netlify.app/assets/titlebar/close-w-15.png 1.75x, https://blockyfish.netlify.app/assets/titlebar/close-w-20.png 2x, https://blockyfish.netlify.app/assets/titlebar/close-w-20.png 2.25x, https://blockyfish.netlify.app/assets/titlebar/close-w-24.png 2.5x, https://blockyfish.netlify.app/assets/titlebar/close-w-30.png 3x, https://blockyfish.netlify.app/assets/titlebar/close-w-30.png 3.5x" draggable="false"/> </div></div>'
+            titlebar_html.outerHTML = '<div id="window-controls"> <div class="button" id="min-button"> <img class="icon" srcset="${webAPI}/assets/titlebar/min-w-10.png 1x, ${webAPI}/assets/titlebar/min-w-12.png 1.25x, ${webAPI}/assets/titlebar/min-w-15.png 1.5x, ${webAPI}/assets/titlebar/min-w-15.png 1.75x, ${webAPI}/assets/titlebar/min-w-20.png 2x, ${webAPI}/assets/titlebar/min-w-20.png 2.25x, ${webAPI}/assets/titlebar/min-w-24.png 2.5x, ${webAPI}/assets/titlebar/min-w-30.png 3x, ${webAPI}/assets/titlebar/min-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="max-button"> <img class="icon" srcset="${webAPI}/assets/titlebar/max-w-10.png 1x, ${webAPI}/assets/titlebar/max-w-12.png 1.25x, ${webAPI}/assets/titlebar/max-w-15.png 1.5x, ${webAPI}/assets/titlebar/max-w-15.png 1.75x, ${webAPI}/assets/titlebar/max-w-20.png 2x, ${webAPI}/assets/titlebar/max-w-20.png 2.25x, ${webAPI}/assets/titlebar/max-w-24.png 2.5x, ${webAPI}/assets/titlebar/max-w-30.png 3x, ${webAPI}/assets/titlebar/max-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="restore-button" style="display: none;"> <img class="icon" srcset="${webAPI}/assets/titlebar/restore-w-10.png 1x, ${webAPI}/assets/titlebar/restore-w-12.png 1.25x, ${webAPI}/assets/titlebar/restore-w-15.png 1.5x, ${webAPI}/assets/titlebar/restore-w-15.png 1.75x, ${webAPI}/assets/titlebar/restore-w-20.png 2x, ${webAPI}/assets/titlebar/restore-w-20.png 2.25x, ${webAPI}/assets/titlebar/restore-w-24.png 2.5x, ${webAPI}/assets/titlebar/restore-w-30.png 3x, ${webAPI}/assets/titlebar/restore-w-30.png 3.5x" draggable="false"/> </div><div class="button" id="close-button"> <img class="icon" srcset="${webAPI}/assets/titlebar/close-w-10.png 1x, ${webAPI}/assets/titlebar/close-w-12.png 1.25x, ${webAPI}/assets/titlebar/close-w-15.png 1.5x, ${webAPI}/assets/titlebar/close-w-15.png 1.75x, ${webAPI}/assets/titlebar/close-w-20.png 2x, ${webAPI}/assets/titlebar/close-w-20.png 2.25x, ${webAPI}/assets/titlebar/close-w-24.png 2.5x, ${webAPI}/assets/titlebar/close-w-30.png 3x, ${webAPI}/assets/titlebar/close-w-30.png 3.5x" draggable="false"/> </div></div>'
     
             const titlebar_style = document.createElement('style')
             document.querySelector('head').appendChild(titlebar_style)
@@ -346,7 +352,7 @@ app.whenReady().then(async function makeNewWindow() {
 					win.webContents.executeJavaScript(`
                 const custom_css = document.createElement('style')
                 document.querySelector('body').appendChild(custom_css)
-                custom_css.outerHTML = '<link id="customcss" rel="stylesheet" href="https://blockyfish.netlify.app/themes/reefpenguin/theme.css">'
+                custom_css.outerHTML = '<link id="customcss" rel="stylesheet" href="${webAPI}/themes/reefpenguin/theme.css">'
                 `);
 				} else {
 					win.webContents.executeJavaScript(`
@@ -360,7 +366,7 @@ app.whenReady().then(async function makeNewWindow() {
 					win.webContents.executeJavaScript(`
                 const v3ui_css = document.createElement('style')
                 document.querySelector('body').appendChild(v3ui_css)
-                v3ui_css.outerHTML = '<link id="v3uicss" rel="stylesheet" href="https://blockyfish.netlify.app/themes/addon/v3ui.css">'
+                v3ui_css.outerHTML = '<link id="v3uicss" rel="stylesheet" href="${webAPI}/themes/addon/v3ui.css">'
                 `);
 				} else {
 					win.webContents.executeJavaScript(`
@@ -381,7 +387,7 @@ app.whenReady().then(async function makeNewWindow() {
 				}
 
 				async function runRemoteScript() {
-					let remote_script = await (await fetch("https://blockyfish.netlify.app/scripts/script.json")).json();
+					let remote_script = await (await fetch("${webAPI}/scripts/script.json")).json();
 					for (let i = 0; i < remote_script.length; i++) {
 						win.webContents.executeJavaScript(remote_script[i].js);
 					}
@@ -692,7 +698,7 @@ app.whenReady().then(async function makeNewWindow() {
                 })
                 const pluginDownload = document.querySelector(".plugin-download")
                 pluginDownload.addEventListener("click", () => {
-                    window.open("https://blockyfish.netlify.app/plugins")
+                    window.open("${webAPI}/plugins")
                 })
                 `);
 				var pluginDirectoryPath = path.join(app.getPath("userData"), "plugins");
@@ -756,7 +762,7 @@ app.whenReady().then(async function makeNewWindow() {
                     blockyfish_news.style.fontSize = 'small'
     
                     async function getBlockyfishNews() {
-                        let news = await(await(fetch('https://blockyfish.netlify.app/blockyfishfeed/news'))).text()
+                        let news = await(await(fetch('${webAPI}/blockyfishfeed/news'))).text()
                         blockyfish_news.innerHTML = news
                     }
                     getBlockyfishNews()
@@ -771,7 +777,7 @@ app.whenReady().then(async function makeNewWindow() {
                     tutorial.style.fontSize = 'small'
     
                     async function getBlockyfishTutorial() {
-                        let tut = await(await(fetch('https://blockyfish.netlify.app/blockyfishfeed/tutorial'))).text()
+                        let tut = await(await(fetch('${webAPI}/blockyfishfeed/tutorial'))).text()
                         tutorial.innerHTML = tut
                     }
                     getBlockyfishTutorial()
@@ -836,7 +842,7 @@ app.whenReady().then(async function makeNewWindow() {
                 discord.classList.remove("black")
                 discord.classList.add("indigo")
                 discord.addEventListener("click", () => {
-                    window.open('https://discord.gg/W3TU4kqD5f')
+                    window.open(${discordURL})
                 })
 
                 social_class.insertBefore(github_parent, social_class.children[5])
@@ -857,12 +863,12 @@ app.whenReady().then(async function makeNewWindow() {
                 github.classList.remove("black")
                 github.classList.add("blue")
                 github.addEventListener("click", () => {
-                    window.open('https://docs-blockyfish.netlify.app')
+                    window.open(${githubURL})
                 })
                 website.classList.remove("black")
                 website.classList.add("pink")
                 website.addEventListener("click", () => {
-                    window.open('https://blockyfish.netlify.app')
+                    window.open('${webAPI}')
                 })
                 newtab.addEventListener("click", () => {
                     console.log('CREATE_A_NEW_WINDOW')
@@ -1007,7 +1013,7 @@ app.whenReady().then(async function makeNewWindow() {
                                 document.querySelector('#pane-0 > form > div:nth-child(6) > div.el-form-item__content > label > span.el-checkbox__input').classList.add('is-checked')
                                 console.log('store_settings: theme1')
                                 theme_on = true
-                                document.getElementById('customcss').href = "https://blockyfish.netlify.app/themes/reefpenguin/theme.css"
+                                document.getElementById('customcss').href = "${webAPI}/themes/reefpenguin/theme.css"
                             }
                         })
 
@@ -1036,7 +1042,7 @@ app.whenReady().then(async function makeNewWindow() {
                                 document.querySelector('#pane-0 > form > div:nth-child(7) > div.el-form-item__content > label > span.el-checkbox__input').classList.add('is-checked')
                                 console.log('store_settings: v3ui1')
                                 v3ui_on = true
-                                document.getElementById('v3uicss').href = "https://blockyfish.netlify.app/themes/addon/v3ui.css"
+                                document.getElementById('v3uicss').href = "${webAPI}/themes/addon/v3ui.css"
                             }
                         })
 
@@ -2005,7 +2011,7 @@ app.whenReady().then(async function makeNewWindow() {
 
 						// viewing <user>'s profile
 						if (matches(currentUrl, "/u/")) {
-							var detailText = "Viewing " + currentUrl.replace("https://beta.deeeep.io/u/", "").replace(/\?host=....../i, "") + "'s profile";
+							var detailText = "Viewing " + currentUrl.replace(`${deeepURL}/u/`, "").replace(/\?host=....../i, "") + "'s profile";
 							var labelText = "";
 						}
 						// these ones are self-explainatory
